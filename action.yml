@@ -1,0 +1,22 @@
+name: 'Code Structure Evaluator'
+description: 'Evaluates code structure using LLMs and provides a score with explanation'
+author: 'Krishna Kumar'
+inputs:
+  api-key:
+    description: 'API key for the LLM service'
+    required: true
+  rubric:
+    description: 'Path to a custom rubric YAML file (optional)'
+    required: false
+    default: ''
+outputs:
+  score:
+    description: 'Total score from the evaluation'
+  explanation:
+    description: 'Detailed explanation of the evaluation'
+runs:
+  using: 'node16'
+  main: 'index.js'
+branding:
+  icon: 'check-square'
+  color: 'blue'

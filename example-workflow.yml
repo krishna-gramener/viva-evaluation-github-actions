@@ -1,0 +1,56 @@
+name: Code Structure Evaluation
+
+# This workflow runs the Code Structure Evaluator action on your repository
+# It can be triggered by push, pull request, or manually
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # Allows manual triggering from the GitHub UI
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      # Step 1: Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetches all history for all branches and tags
+
+      # Step 2: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # You can use a newer version if needed
+
+      # Step 3: Run the Code Structure Evaluator action
+      - name: Evaluate Code Structure
+        uses: ./  # Use the action from the current repository
+        with:
+          api-key: ${{ secrets.OPENAI_API_KEY }}  # OpenAI API key stored in GitHub secrets
+          # Optional: Specify a custom rubric file if you want to use your own evaluation criteria
+          # rubric: 'path/to/custom-rubric.yml'
+        id: evaluation  # This ID is used to reference outputs from this step
+
+      # Step 4: Commit the Result.md file to the repository
+      - name: Commit Result.md
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add Result.md
+          git commit -m "Add code structure evaluation result"
+          git push
+        # Note: This step will fail if the workflow doesn't have write permissions
+
+      # Step 5: Upload the report as a workflow artifact (useful if commit fails)
+      - name: Upload Report as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-structure-report
+          path: Result.md  # The path to the generated report
+
+
