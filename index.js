@@ -156,7 +156,7 @@ PART 2: A JSON object with just the score and total:
   "maxScore": ${maxPossibleScore}
 }`;
     
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch('https://aipipe.org/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
