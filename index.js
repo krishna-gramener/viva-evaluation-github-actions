@@ -163,13 +163,11 @@ PART 2: A JSON object with just the score and total:
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'gpt-4',
+        model: 'gpt-5-mini',
         messages: [
           { role: 'system', content: 'You are an expert code evaluator assistant.' },
           { role: 'user', content: prompt }
-        ],
-        temperature: 0.2,
-        max_tokens: 4000
+        ]
       })
     });
     
