@@ -27,7 +27,13 @@ jobs:
         with:
           node-version: '16'  # You can use a newer version if needed
 
-      # Step 3: Run the Code Structure Evaluator action
+      # Step 3: Install dependencies for the action
+      - name: Install Dependencies
+        run: |
+          cd ${{ github.action_path || '.' }}
+          npm ci
+
+      # Step 4: Run the Code Structure Evaluator action
       - name: Evaluate Code Structure
         uses: ./  # Use the action from the current repository
         with:
