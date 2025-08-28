@@ -11,7 +11,7 @@
     "code-quality",
     "llm"
   ],
-  "author": "Your Name",
+  "author": "Krishna Kumar",
   "license": "MIT",
   "dependencies": {
     "glob": "^10.2.2",
