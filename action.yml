@@ -23,8 +23,8 @@ runs:
         cd ${{ github.action_path }}
         npm install
     - name: Run Action
-      shell: node16
-      run: ${{ github.action_path }}/index.js
+      shell: bash
+      run: node ${{ github.action_path }}/index.js
       env:
         INPUT_API_KEY: ${{ inputs.api-key }}
         INPUT_RUBRIC: ${{ inputs.rubric }}
