@@ -16,6 +16,7 @@ outputs:
     description: 'Detailed explanation of the evaluation'
 runs:
   using: 'node16'
+  pre: 'npm ci'
   main: 'index.js'
 branding:
   icon: 'check-square'
