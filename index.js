@@ -1,4 +1,4 @@
-const glob = require('glob');
+const { glob } = require('glob');
 const fs = require('fs').promises;
 const path = require('path');
 const yaml = require('js-yaml');
