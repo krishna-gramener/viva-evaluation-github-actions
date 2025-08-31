@@ -17,13 +17,13 @@ jobs:
     steps:
       # Step 1: Checkout the repository code
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Fetches all history for all branches and tags
 
       # Step 2: Run the Code Structure Evaluator action
       - name: Evaluate Code Structure
-        uses: ./  # Use the action from the current repository
+        uses: krishna-gramener/viva-evaluation-github-actions@main  # Use the action from GitHub
         with:
           api-key: ${{ secrets.OPENAI_API_KEY }}  # OpenAI API key stored in GitHub secrets
           # Optional: Specify a custom rubric file if you want to use your own evaluation criteria
@@ -42,7 +42,7 @@ jobs:
 
       # Step 4: Upload the report as a workflow artifact (useful if commit fails)
       - name: Upload Report as Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: code-structure-report
           path: Result.md  # The path to the generated report

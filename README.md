@@ -1,11 +1,11 @@
 # Code Structure Evaluator GitHub Action
 
-An ultra-minimal GitHub Action that evaluates code repositories based on structure and organization using LLM technology. This action analyzes your codebase and provides a score with detailed feedback in a markdown report.
+An ultra-minimal GitHub Action that evaluates code repositories based on structure and organization using LLM technology. This action analyzes your codebase and provides a score with detailed feedback in a markdown report. It uses the GPT-5-mini model via aipipe.org API to perform the evaluation.
 
 ## Features
 
 - **Ultra-minimal design**: Focuses only on essential functionality
-- **LLM-powered evaluation**: Uses OpenAI's GPT-4 to evaluate code structure
+- **LLM-powered evaluation**: Uses GPT-5-mini model via aipipe.org to evaluate code structure
 - **Comprehensive analysis**: Reviews directory structure, code quality, and architecture
 - **Detailed reporting**: Generates a markdown report with scores and explanations
 - **Flexible rubric**: Uses embedded rubric by default or accepts custom rubric
@@ -15,12 +15,12 @@ An ultra-minimal GitHub Action that evaluates code repositories based on structu
 
 ### Prerequisites
 
-1. An OpenAI API key with access to GPT-4
+1. An API key for aipipe.org (compatible with OpenAI API format)
 2. A GitHub repository with the code you want to evaluate
 
 ### Installation
 
-1. Create a GitHub Secret named `OPENAI_API_KEY` with your OpenAI API key
+1. Create a GitHub Secret named `OPENAI_API_KEY` with your aipipe.org API key
 2. Create a workflow file in your repository at `.github/workflows/evaluate-code.yml`
 
 ## Usage
@@ -59,7 +59,7 @@ jobs:
 
       # Step 3: Run the Code Structure Evaluator action
       - name: Evaluate Code Structure
-        uses: your-username/code-structure-evaluator@v1
+        uses: krishna-gramener/viva-evaluation-github-actions@main
         with:
           api-key: ${{ secrets.OPENAI_API_KEY }}
         id: evaluation
@@ -86,7 +86,7 @@ By default, the action uses an embedded rubric that evaluates code organization,
 
 ```yaml
 - name: Evaluate Code Structure
-  uses: your-username/code-structure-evaluator@v1
+  uses: krishna-gramener/viva-evaluation-github-actions@main
   with:
     api-key: ${{ secrets.OPENAI_API_KEY }}
     rubric: './path/to/custom-rubric.yml'
@@ -159,11 +159,12 @@ architecture:
 
 ## How It Works
 
-1. **Repository Analysis**: The action scans your repository and collects all code files
-2. **LLM Evaluation**: It sends the code to OpenAI's GPT-4 along with the rubric
-3. **Report Generation**: The LLM evaluates the code and generates a detailed markdown report
-4. **Output Creation**: The action creates a Result.md file with the evaluation
-5. **Workflow Integration**: The score and explanation are available as outputs for use in your workflow
+1. **Repository Analysis**: The action scans your repository and collects all code files, excluding large files (>500KB), binary files, and common directories like node_modules, .git, dist, and build
+2. **Code Sampling**: It selects up to 3 code files with common extensions (.js, .py, .java, etc.) and includes samples in the evaluation
+3. **LLM Evaluation**: It sends the code samples and file listing to the GPT-5-mini model via aipipe.org along with the rubric
+4. **Report Generation**: The LLM evaluates the code and generates a detailed markdown report with scores for each category
+5. **Output Creation**: The action creates a Result.md file with the evaluation and sets GitHub outputs
+6. **Workflow Integration**: The score and explanation are available as outputs for use in your workflow
 
 ## Result.md Format
 
@@ -176,7 +177,7 @@ The generated Result.md file contains:
 
 ## Best Practices
 
-1. **Security**: Always store your OpenAI API key as a GitHub secret
+1. **Security**: Always store your API key as a GitHub secret
 2. **Permissions**: Ensure your workflow has `contents: write` permission to commit the Result.md file
 3. **Custom Rubrics**: Create rubrics specific to your project's needs and standards
 4. **CI Integration**: Integrate the action into your CI pipeline for regular code quality checks
